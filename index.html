@@ -47,16 +47,27 @@
             <h1>Sfida CN</h1>
         </div>
     </div>
-    <div class="row justify-content-center mt-5">
-        <div class="col-8">
-            <input type="number" name="number" placeholder="Inserisci numero da cercare"
-                   class="form-control rounded-5 text-white text-center mb-5"
-                   id="cerca">
+    <form onsubmit="return false">
+        <div class="row justify-content-center mt-5">
+            <div class="col-8">
+
+                <input type="number" name="number" placeholder="Inserisci numero da cercare"
+                       class="form-control rounded-5 text-white text-center mb-5"
+                       id="cerca" required>
+            </div>
+            <div class="col-3">
+                <input type="number" name="number" placeholder="Inserisci numero di elementi"
+                       class="form-control rounded-5 text-white text-center mb-5"
+                       id="elementi" required>
+            </div>
+            <div class="col-1">
+                <button type="submit" class="btn btn-primary rounded-5" id="submit">Genera</button>
+            </div>
         </div>
-    </div>
+    </form>
     <div class="row justify-content-center mt-5 d-none" id="content">
         <h2>Array Generato</h2>
-        <div id="arrayContainer"></div>
+        <div class="card card-body" id="arrayContainer"></div>
         <h2 class="mt-3">Senza ripetizioni</h2>
         <div id="tableContainer"></div>
 

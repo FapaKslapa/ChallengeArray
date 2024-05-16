@@ -54,18 +54,21 @@ const renderTable = (numbers) => {
     document.getElementById('arrayContainer').innerHTML = tableHTML;
 }
 const content = document.getElementById('content');
-document.getElementById("cerca").addEventListener("keypress", async function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        const target = parseInt(this.value, 10);
-        if (!isNaN(target)) {
-            const n = getRandomInt(1, 50);
-            const numbers = generateRandomArray(n);
-            renderTable(numbers);
-            const combinations = await findCombinations(numbers, target);
-            content.classList.remove('d-none');
-            renderAccordion(combinations, document.getElementById('tableContainer'));
+const num = document.getElementById('elementi');
+const invia = document.getElementById('submit');
+const cerca = document.getElementById('cerca');
+invia.onclick = async () => {
+    const target = parseInt(cerca.value, 10);
+    if (!isNaN(target)) {
+        if (num.value === "") {
+            alert("Inserisci il numero di elementi")
+            return
         }
+        const numbers = generateRandomArray(num.value);
+        renderTable(numbers);
+        const combinations = await findCombinations(numbers, target);
+        content.classList.remove('d-none');
+        renderAccordion(combinations, document.getElementById('tableContainer'));
     }
-});
+}
 
