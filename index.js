@@ -1,16 +1,12 @@
-const findCombinations = (numbers, target, index = 0, current = [], combinations = [], uniqueCombinations = new Set()) => {
-    const sommaCorrente = current.reduce((acc, val) => acc + val, 0);
-    if (sommaCorrente === target) {
-        const combinationKey = current.sort((a, b) => a - b).join(',');
-        if (!uniqueCombinations.has(combinationKey)) {
-            combinations.push([...current]);
-            uniqueCombinations.add(combinationKey);
-        }
-        return;
+const findCombinations = async (numbers, target, index = 0, current = []) => {
+    const sumCurrent = current.reduce((acc, val) => acc + val, 0);
+    if (sumCurrent === target) {
+        return [current];
     }
-    if (index >= numbers.length || sommaCorrente > target) return;
-    findCombinations(numbers, target, index + 1, [...current, numbers[index]], combinations, uniqueCombinations);
-    findCombinations(numbers, target, index + 1, current, combinations, uniqueCombinations);
+    if (index >= numbers.length || sumCurrent > target) return [];
+    const withCurrentNumber = await findCombinations(numbers, target, index + 1, [...current, numbers[index]]);
+    const withoutCurrentNumber = await findCombinations(numbers, target, index + 1, current);
+    return [...withCurrentNumber, ...withoutCurrentNumber];
 }
 
 const renderAccordion = (data, div) => {
@@ -58,16 +54,15 @@ const renderTable = (numbers) => {
     document.getElementById('arrayContainer').innerHTML = tableHTML;
 }
 const content = document.getElementById('content');
-document.getElementById("cerca").addEventListener("keypress", function (event) {
+document.getElementById("cerca").addEventListener("keypress", async function (event) {
     if (event.key === "Enter") {
         event.preventDefault();
         const target = parseInt(this.value, 10);
         if (!isNaN(target)) {
-            const combinations = [];
-            n = getRandomInt(1, 50);
-            numbers = generateRandomArray(n);
+            const n = getRandomInt(1, 50);
+            const numbers = generateRandomArray(n);
             renderTable(numbers);
-            findCombinations(numbers, target, 0, [], combinations);
+            const combinations = await findCombinations(numbers, target);
             content.classList.remove('d-none');
             renderAccordion(combinations, document.getElementById('tableContainer'));
         }
